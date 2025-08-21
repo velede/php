@@ -12,7 +12,7 @@
             </div>
 
             <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form action="/sessions" method="POST" class="space-y-6">
+                <form action="/session" method="POST" class="space-y-6">
                     <input type="hidden" name="remember" value="true">
                     <div>
                         <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>
