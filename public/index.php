@@ -1,8 +1,13 @@
 <?php
 
+use Core\Session;
+use Core\ValidationExcept;
+
 const BASE_PATH = __DIR__ . "/../";
 
 session_start();
+
+
 
 require BASE_PATH . "Core/functions.php";
 //require base_path("Database.php");
@@ -26,15 +31,18 @@ $uri = parse_url($_SERVER["REQUEST_URI"])["path"];
 
 $method = strtoupper($_POST['_method'] ?? $_SERVER["REQUEST_METHOD"]);
 
-$router->route($uri, $method);
+try{
+    $router->route($uri, $method);
+} catch (ValidationExcept $exception) {
 
+    dd($_SERVER);
+    Session::flash('errors', $exception->errors);
+    Session::flash('old', $exception->old);
 
+    //return redirect('/login');
 
+    return redirect($router->previousUrl());
 
+}
 
-//$id = $_GET['id'];
-//
-//$query = "SELECT * FROM posts WHERE id = ?";
-//
-//$posts = $db->query($query, [$id]) -> fetch();
-//dd($posts);
+Session::unflash();

@@ -137,5 +137,11 @@ class Router {
 
     }
 
+    public function previousUrl(){
+
+        return $_SERVER["HTTP_REFERER"];
+
+    }
+
 
 }

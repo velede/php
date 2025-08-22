@@ -6,30 +6,20 @@ use Core\Authenticator;
 use Http\Forms\LoginForm;
 
 
+$form = LoginForm::validate($attributes = [
+    'email' => $_POST['email'],
+    'password' => $_POST['password']
+]);
 
-$email = $_POST["email"];
-$password = $_POST["password"];
+$signedIn = (new Authenticator)->attempt($attributes['email'], $attributes['password']);
 
-$form = new LoginForm();
+if(!$signedIn) {
 
-if($form->validate($email, $password)){
-
-    if((new Authenticator)->attempt($email, $password)) {
-
-        redirect('/');
-
-    }
-
-
-        $form->error('email', 'no match for email/password');
-
+    $form->error('email', 'no match for email/password') ->throw();
 
 }
 
-
-return view('session/create.view.php', [
-    'errors' => $form->errors()
-]);
+redirect('/');
 
 
 
